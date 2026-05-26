@@ -78,8 +78,7 @@ function ManagerDashboard() {
     window.print();
 
   };
-
-  useEffect(() => {
+useEffect(() => {
 
   loadData();
 

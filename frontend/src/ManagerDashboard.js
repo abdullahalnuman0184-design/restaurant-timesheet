@@ -25,29 +25,36 @@ function ManagerDashboard() {
   const token =
     localStorage.getItem('token');
 
-  const loadData = useCallback(async () => {
+  const loadData =
+    useCallback(async () => {
 
-    try {
+      try {
 
-      const res = await axios.get(
-        'http://localhost:5000/all-timesheets',
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`
+        const res = await axios.get(
+          'http://localhost:5000/all-timesheets',
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
           }
-        }
-      );
+        );
 
-      setTimesheets(res.data);
+        setTimesheets(res.data);
 
-    } catch (err) {
+      } catch (err) {
 
-      console.log(err);
+        console.log(err);
 
-    }
+      }
 
-  }, []);
+    }, [token]);
+
+  useEffect(() => {
+
+    loadData();
+
+  }, [loadData]);
 
   const filteredTimesheets =
     timesheets.filter(item => {
@@ -60,7 +67,8 @@ function ManagerDashboard() {
 
       const matchesEmployee =
         !employeeFilter ||
-        item.username === employeeFilter;
+        item.username ===
+          employeeFilter;
 
       return matchesDate &&
         matchesEmployee;
@@ -70,7 +78,7 @@ function ManagerDashboard() {
   const totalFilteredHours =
     filteredTimesheets.reduce(
       (sum, item) =>
-        sum + item.total_hours,
+        sum + Number(item.total_hours),
       0
     );
 
@@ -79,11 +87,7 @@ function ManagerDashboard() {
     window.print();
 
   };
-useEffect(() => {
 
-  loadData();
-
-}, [loadData]);
   return (
 
     <div
@@ -92,7 +96,8 @@ useEffect(() => {
         backgroundImage:
           "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4')",
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition:
+          'center',
         padding: '40px',
         color: 'white'
       }}
@@ -126,34 +131,53 @@ useEffect(() => {
           style={{
             display: 'flex',
             gap: '15px',
-            marginBottom: '30px'
+            marginBottom: '30px',
+            flexWrap: 'wrap'
           }}
         >
 
           <input
             type="date"
+            value={fromDate}
             onChange={(e) =>
               setFromDate(
                 e.target.value
               )
             }
+            style={{
+              padding: '10px',
+              borderRadius: '10px',
+              fontSize: '16px'
+            }}
           />
 
           <input
             type="date"
+            value={toDate}
             onChange={(e) =>
               setToDate(
                 e.target.value
               )
             }
+            style={{
+              padding: '10px',
+              borderRadius: '10px',
+              fontSize: '16px'
+            }}
           />
 
           <select
+            value={employeeFilter}
             onChange={(e) =>
               setEmployeeFilter(
                 e.target.value
               )
             }
+            style={{
+              padding: '10px',
+              borderRadius: '10px',
+              fontSize: '16px'
+            }}
           >
 
             <option value="">
@@ -179,13 +203,30 @@ useEffect(() => {
 
           <button
             onClick={printReport}
+            style={{
+              padding:
+                '10px 20px',
+              borderRadius:
+                '10px',
+              backgroundColor:
+                'orange',
+              color: 'black',
+              border: 'none',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
           >
             🖨 Print Report
           </button>
 
         </div>
 
-        <h2>
+        <h2
+          style={{
+            marginBottom: '20px',
+            color: 'white'
+          }}
+        >
           Total Hours:
           {' '}
           {totalFilteredHours.toFixed(2)}
@@ -194,7 +235,8 @@ useEffect(() => {
         <table
           style={{
             width: '100%',
-            borderCollapse: 'collapse',
+            borderCollapse:
+              'collapse',
             backgroundColor:
               'rgba(0,0,0,0.75)'
           }}
@@ -204,12 +246,71 @@ useEffect(() => {
 
             <tr>
 
-              <th>Employee</th>
-              <th>Date</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Total Hours</th>
-              <th>Status</th>
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                Employee
+              </th>
+
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                Date
+              </th>
+
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                Start
+              </th>
+
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                End
+              </th>
+
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                Total Hours
+              </th>
+
+              <th
+                style={{
+                  padding: '15px',
+                  border:
+                    '1px solid orange',
+                  color: 'orange'
+                }}
+              >
+                Status
+              </th>
 
             </tr>
 
@@ -222,12 +323,94 @@ useEffect(() => {
 
                 <tr key={item.id}>
 
-                  <td>{item.username}</td>
-                  <td>{item.work_date}</td>
-                  <td>{item.start_time}</td>
-                  <td>{item.end_time}</td>
-                  <td>{item.total_hours}</td>
-                  <td>{item.payment_status}</td>
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center'
+                    }}
+                  >
+                    {item.username}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center'
+                    }}
+                  >
+                    {item.work_date}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center'
+                    }}
+                  >
+                    {item.start_time}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center'
+                    }}
+                  >
+                    {item.end_time}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center'
+                    }}
+                  >
+                    {item.total_hours}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: '15px',
+                      border:
+                        '1px solid rgba(255,255,255,0.2)',
+                      fontWeight:
+                        'bold',
+                      textAlign:
+                        'center',
+                      color:
+                        item.payment_status ===
+                        'Paid'
+                          ? 'lightgreen'
+                          : 'orange'
+                    }}
+                  >
+                    {item.payment_status}
+                  </td>
 
                 </tr>
 

@@ -25,30 +25,28 @@ function ManagerDashboard() {
   const token =
     localStorage.getItem('token');
 
-  const loadData =
-    useCallback(async () => {
+ const loadData = useCallback(async () => {
 
-      try {
+  try {
 
-        const res = await axios.get(
-          'http://localhost:5000/all-timesheets',
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
-          }
-        );
-
-        setTimesheets(res.data);
-
-      } catch (err) {
-
-        console.log(err);
-
+    const res = await axios.get(
+      'http://localhost:5000/all-timesheets',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
+    );
 
-    }, [token]);
+    setTimesheets(res.data);
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+
+}, [token]);
 
   useEffect(() => {
 

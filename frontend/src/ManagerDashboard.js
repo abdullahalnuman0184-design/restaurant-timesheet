@@ -1,6 +1,7 @@
 import React, {
   useEffect,
-  useState
+  useState,
+  useCallback
 } from 'react';
 
 import axios from 'axios';
@@ -24,7 +25,7 @@ function ManagerDashboard() {
   const token =
     localStorage.getItem('token');
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
 
     try {
 
@@ -46,7 +47,7 @@ function ManagerDashboard() {
 
     }
 
-  };
+  }, []);
 
   const filteredTimesheets =
     timesheets.filter(item => {

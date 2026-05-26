@@ -1,6 +1,7 @@
 import React, {
   useState,
-  useEffect
+  useEffect,
+  useCallback
 } from 'react';
 import axios from 'axios';
 
@@ -24,8 +25,7 @@ const [statusFilter, setStatusFilter] =
   useState([]);
   const token = localStorage.getItem('token');
 
-  const loadTimesheets = async () => {
-
+  const loadTimesheets = useCallback(async () => {
     try {
 
       const res = await axios.get(
@@ -45,14 +45,12 @@ const [statusFilter, setStatusFilter] =
 
     }
 
-  };
-
-  useEffect(() => {
+  }, []);
+useEffect(() => {
 
   loadTimesheets();
 
-}, [loadTimesheets]);
-
+}, []);
   const submitShift = async () => {
 
     try {

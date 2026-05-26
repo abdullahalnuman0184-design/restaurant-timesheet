@@ -81,10 +81,9 @@ function ManagerDashboard() {
 
   useEffect(() => {
 
-    loadData();
+  loadData();
 
-  }, []);
-
+}, [loadData]);
   return (
 
     <div

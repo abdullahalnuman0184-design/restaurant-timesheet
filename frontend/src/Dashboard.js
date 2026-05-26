@@ -49,9 +49,9 @@ const [statusFilter, setStatusFilter] =
 
   useEffect(() => {
 
-    loadTimesheets();
+  loadTimesheets();
 
-  }, []);
+}, [loadTimesheets]);
 
   const submitShift = async () => {
 
